@@ -1,0 +1,58 @@
+{
+  "name": "dsh-hotspot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "B站 / 抖音 网络热点与热梗聚合面板：每天 06:00 自动更新，DSH 侧边栏可视化查看，含按复用度排名的流传榜。",
+  "author": "REDholoa",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./client/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "client",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "hotspot",
+    "bilibili",
+    "douyin",
+    "trending",
+    "meme"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/REDholoa/dsh-hotspot.git"
+  },
+  "homepage": "https://github.com/REDholoa/dsh-hotspot",
+  "bugs": {
+    "url": "https://github.com/REDholoa/dsh-hotspot/issues"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-ui-slots"
+      ],
+      "platform": "web"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1"
+  }
+}

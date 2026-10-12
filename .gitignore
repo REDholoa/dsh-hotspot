@@ -1,0 +1,19 @@
+# 依赖与构建产物
+node_modules/
+
+# 日志
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+
+# 编辑器 / 系统
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 本地临时文件
+*.tmp
+*.local

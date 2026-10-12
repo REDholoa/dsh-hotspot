@@ -1,0 +1,5 @@
+# dsh-hotspot bundle patch（dsh.bundle manifest 要求的加载配置）
+# 单包单插件：装一次，侧边栏「热点」面板全部功能到位。
+- insert:
+    - id: dsh-hotspot
+      name: dsh-hotspot
