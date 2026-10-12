@@ -290,7 +290,12 @@ Error: cannot get property "webServer" without inject
 
 ### 跑测试
 
+> `tools/` 随 git 仓库分发，但不在 npm 的打包白名单（`package.json` 的 `files`）里，
+> 所以用 `pnpm add github:...` 装下来的副本**不含**测试脚本（已实测确认）。
+> 要跑测试请克隆仓库：
+
 ```bash
+git clone https://github.com/REDholoa/dsh-hotspot && cd dsh-hotspot
 node tools/smoke.mjs          # Host：真实抓取 + 线上协议 + 落盘 + 统计 + 分类聚合 + 流传度（55 项断言）
 node tools/smoke.mjs --real   # 同上，但写入真实数据目录，给插件预热一份缓存
 node tools/client-check.mjs   # Client：模块契约 + 五个页签 × 有/无数据 全渲染 + 滚动结构（69 项）
