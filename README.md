@@ -301,13 +301,39 @@ node tools/smoke.mjs --real   # 同上，但写入真实数据目录，给插件
 node tools/client-check.mjs   # Client：模块契约 + 五个页签 × 有/无数据 全渲染 + 滚动结构（69 项）
 ```
 
-两个脚本都不依赖 DSH 运行时，用最小 ctx / React 桩把真实代码路径跑一遍。
+三个脚本都不依赖 DSH 运行时，用最小 ctx / React 桩把真实代码路径跑一遍。
 `smoke.mjs` 里还包含针对**已修 bug 的回归断言**：
 
 - 只共享 2 字词（`广州`）、句式片段（`请查收`、`拍到了`、`有多`）的标题**不会**被聚成一个话题；
 - **视频条目不参与流传榜**；
 - 跨天持续但今天只出现一次的梗**能**进流传榜，且 `days` 统计正确；
 - `定档1` 这类数字碎片、`演唱会` 这类领域类别词**不会**被当成梗词。
+
+### 发布产物验证（`tools/verify-published.mjs`）
+
+`smoke.mjs` 跑的是**工作副本**，而成品要经过 npm 的 `files` 打包白名单 ——
+白名单漏掉一个运行时模块，本地测试全绿、用户装上却直接崩。这个脚本专门补这块盲区：
+
+```bash
+# ① 发布前自检：按 npm 的 files 语义算出哪些文件会进包，断言运行时必需的一个都不少
+node tools/verify-published.mjs
+
+# ② 验证真正装下来的副本（更硬：逐个检查磁盘上的真实文件）
+pnpm add github:REDholoa/dsh-hotspot
+node tools/verify-published.mjs ./node_modules/dsh-hotspot
+
+# --offline 跳过真实抓取那一段
+node tools/verify-published.mjs --offline
+```
+
+除了打包白名单，它还会验证：`package.json` 契约、Host 入口能否连依赖一起解析、
+**严格 inject 下的激活**、线上协议（415 / gateway-bad-request / 401）、
+真实抓取三个数据槽、`stats.groups` 与 `stats.memeSpread` 是否就位、Client 半边的模块契约与插槽注册。
+
+它会把 `DSH_HOME` 指向临时目录（退出时自动清理），**不会碰你真实的热点缓存**。
+
+> 已用负向测试确认它有牙齿：临时把 `lib` 从 `files` 里删掉，脚本会精确列出
+> 会被漏掉的文件并以非 0 退出；指向一个残缺副本也会给出干净诊断而不是抛堆栈。
 
 ### 写 Host 半边代码时最容易踩的坑
 
